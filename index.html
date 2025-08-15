@@ -6,24 +6,25 @@
 <title>TDS & GST Calculator</title>
 <style>
   :root{
-    --blue:#0b74c4;          /* oceanic primary */
-    --blue-2:#065a9e;        /* dark */
-    --blue-3:#e7f3ff;        /* pale */
+    --blue:#0b74c4;
+    --blue-2:#065a9e;
+    --blue-3:#e7f3ff;
     --ink:#1b2a3a;
     --muted:#6b7a8a;
     --bg:#f4f9fd;
     --card:#ffffff;
     --ring:#d6e6f5;
-    --danger:#c63d3d;        /* not pure red */
-    --teal:#009688;          /* add row */
-    --violet:#6c63ff;        /* download */
+    --danger:#c63d3d;
+    --teal:#009688;
+    --violet:#6c63ff;
   }
+
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
   a{color:inherit}
 
   /* Header */
-  header{background:linear-gradient(90deg,var(--blue),#1398ff);color:#fff;padding:18px 16px;text-align:center;position:sticky;top:0;z-index:10;box-shadow:0 6px 20px rgba(0,0,0,.08)}
+  header{background:linear-gradient(90deg,var(--blue),#1398ff);color:#fff;padding:18px 16px;text-align:center;position:sticky;top:0;z-index:20;box-shadow:0 6px 20px rgba(0,0,0,.08)}
   header h1{margin:0;font-size:22px;letter-spacing:.3px}
 
   /* Layout */
@@ -35,9 +36,9 @@
 
   /* Controls */
   .controls{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
-  .btn{appearance:none;border:1px solid transparent;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(11,116,196,.16)}
-  .btn-add{background:var(--teal);color:#fff}
-  .btn-download{background:var(--violet);color:#fff}
+  .btn{appearance:none;border:1px solid transparent;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(11,116,196,.16);background:#fff}
+  .btn-add{background:var(--teal);color:#fff;border-color:transparent}
+  .btn-download{background:var(--violet);color:#fff;border-color:transparent}
   .btn-remove{background:var(--danger);color:#fff;border-color:#d67c7c}
   .btn:active{transform:translateY(1px)}
 
@@ -45,21 +46,48 @@
   .infobox{background:var(--blue-3);border:1px dashed #b9dafd;color:#0e406a;padding:12px;border-radius:12px;margin:10px 0}
   .infobox b{color:#0b4470}
 
-  /* Table */
-  table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--ring);border-radius:14px;overflow:hidden;table-layout:fixed}
-  thead th{background:#e6f2fb;color:#0b4470;font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:.4px;padding:10px;border-bottom:1px solid var(--ring)}
-  tbody td, tfoot td{border-bottom:1px solid #eef4fb;padding:8px 8px;text-align:center}
+  /* Table wrapper to allow horizontal scroll on small screens */
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Table (keep true table layout) */
+  table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    background:var(--card);
+    border:1px solid var(--ring);
+    border-radius:14px;
+    overflow:hidden;
+    table-layout:auto;
+    min-width: 700px; /* baseline so columns have room on small screens */
+  }
+  thead th{
+    background:#e6f2fb;color:#0b4470;font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:.4px;padding:10px;
+  }
+  tbody td, tfoot td{padding:8px 8px;text-align:center;vertical-align:middle}
   tbody tr:hover{background:#f9fcff}
   tfoot td{font-weight:800;background:#f3f8fe}
-  .narrow{width:56px}
+  .narrow{min-width:100px}           /* ensure Action column is wide enough */
   .right{text-align:right}
+
+  /* white borders for alignment */
+  #calcTable thead th,#calcTable tbody td,#calcTable tfoot td{
+    border-right:1px solid #fff;
+    border-bottom:1px solid #fff;
+  }
+  #calcTable thead th:last-child,#calcTable tbody td:last-child,#calcTable tfoot td:last-child{
+    border-right:none;
+  }
+  #calcTable tbody tr:last-child td{border-bottom:1px solid #fff}
+  #calcTable input.totalPrice{text-align:right}
 
   select, input[type="number"]{width:100%;padding:8px;border:1px solid #dfe8f2;border-radius:10px;background:#fff;outline:none}
   select:focus, input[type="number"]:focus{box-shadow:0 0 0 3px #cfe8ff;border-color:#9ed0ff}
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button{appearance:none;margin:0}
-
-  .table-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
   /* Footer */
   footer{margin:26px 0;color:#fff;background:var(--blue-2);padding:14px;text-align:center;border-top:4px solid var(--blue)}
@@ -73,38 +101,36 @@
     .card{box-shadow:none}
   }
 
-  
-/* Responsive improvements */
-@media (max-width: 720px){
-  header h1{font-size:18px}
-  .btn{padding:8px 12px;font-size:14px}
-  select, input[type="number"]{font-size:14px;padding:6px}
-  #calcTable{min-width:900px}
-}
-
-/* Ultra small devices */
-@media (max-width: 480px){
-  header h1{font-size:16px}
-  .btn{font-size:13px;padding:6px 10px}
-  select, input[type="number"]{font-size:13px;padding:5px}
-  #calcTable{min-width:900px}
-}
-  .btn {
-    font-size: 13px;
-    padding: 6px 10px;
-  }
-  select, input[type="number"] {
-    font-size: 13px;
-    padding: 5px;
-  }
-}
-
+  /* Responsive tweaks */
+  @media (max-width: 900px){
+    table { min-width: 880px; } /* give enough horizontal room so columns don't collapse */
   }
 
-  #calcTable thead th,#calcTable tbody td,#calcTable tfoot td{border-right:1px solid #fff;border-bottom:1px solid #fff}#calcTable thead th:last-child,#calcTable tbody td:last-child,#calcTable tfoot td:last-child{border-right:none}#calcTable tbody tr:last-child td{border-bottom:1px solid #fff}#calcTable input.totalPrice{text-align:right}
+  @media (max-width: 720px){
+    header h1{font-size:18px}
+    .btn{padding:8px 12px;font-size:14px}
+    select, input[type="number"]{font-size:14px;padding:6px}
+    /* make remove button smaller on mobile but keep text */
+    #calcTable td.narrow .btn-remove{
+      padding:4px 8px;
+      font-size:12px;
+      white-space:nowrap;
+    }
+  }
+
+  @media (max-width:480px){
+    header h1{font-size:16px}
+    .btn{font-size:13px;padding:6px 10px}
+    select, input[type="number"]{font-size:13px;padding:5px}
+    #calcTable td.narrow .btn-remove{
+      padding:3px 6px;
+      font-size:11px;
+    }
+  }
 </style>
-<!-- High‑quality client‑side PDF (includes header & footer) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-YcsIP8qQ8iD3fXyUQqkQy6yZP7c9bQFspQqYc7BubQyB1pPuBQm7gkH4F3gK9u6V9eVQ0C0k3Zb0+JrYp7XhIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- html2pdf for PDF export (optional) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
   <header><h1>TDS & GST Calculator</h1></header>
@@ -115,39 +141,42 @@
 
       <div class="controls">
         <button class="btn btn-add" id="addRowBtn">+ Add Row</button>
-        <button onclick="window.print()" class="btn btn-download" id="downloadPdfBtn">SAVE AS PDF</button>
+        <button class="btn btn-download" id="downloadPdfBtn">SAVE AS PDF</button>
       </div>
 
       <div class="infobox">
-        <b>GST & TDS (India) — quick note:</b> TDS on certain supplies is typically <b>2%</b> of the <i>taxable value</i> (basic price). For intrastate supplies, GST splits into <b>SGST</b> and <b>CGST</b> equally; for interstate, <b>IGST</b> applies (not shown here). Always verify latest rules before filing GSTR‑7. This is only an informational summary.
+        <b>GST & TDS (India) — quick note:</b> TDS on certain supplies is typically <b>2%</b> of the <i>taxable value</i> (basic price). For intrastate supplies, GST splits into <b>SGST</b> and <b>CGST</b> equally; for interstate, <b>IGST</b> applies (not shown here).
       </div>
 
-      <div class="table-wrapper"><table id="calcTable">
-        <thead>
-          <tr>
-            <th class="narrow">#</th>
-            <th>Item Name</th>
-            <th>GST Rate</th>
-            <th>Total Price</th>
-            <th>Basic Price</th>
-            <th>SGST</th>
-            <th>CGST</th>
-            <th>Total Bill Price</th>
-            <th>TDS Deduction 2%</th>
-            <th>Bank Transfer</th>
-            <th class="narrow">Action</th>
-          </tr>
-        </thead>
-        <tbody id="calcBody"></tbody>
-        <tfoot>
-          <tr>
-            <td colspan="8" class="right">Grand Total</td>
-            <td id="totalTDS">0.00</td>
-            <td id="totalBank">0.00</td>
-            <td></td>
-          </tr>
-        </tfoot>
-      </table></div>
+      <div class="table-wrapper">
+        <table id="calcTable" aria-describedby="calc-desc">
+          <caption id="calc-desc" style="display:none">Invoice calculation table</caption>
+          <thead>
+            <tr>
+              <th class="narrow">#</th>
+              <th>Item Name</th>
+              <th>GST Rate</th>
+              <th>Total Price</th>
+              <th>Basic Price</th>
+              <th>SGST</th>
+              <th>CGST</th>
+              <th>Total Bill Price</th>
+              <th>TDS Deduction 2%</th>
+              <th>Bank Transfer</th>
+              <th class="narrow">Action</th>
+            </tr>
+          </thead>
+          <tbody id="calcBody"></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="8" class="right">Grand Total</td>
+              <td id="totalTDS">0.00</td>
+              <td id="totalBank">0.00</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </section>
 
     <footer>
@@ -156,25 +185,12 @@
   </div>
 
 <script>
-// Locked dropdown options from your Excel (V8:V17)
+/* --- Data & helpers --- */
 const ITEM_RATES = {
-  'CEMENT': 28,
-  'LOHA': 18,
-  'MURUM': 5,
-  'RET': 5,
-  'JCB SERVICE': 18,
-  'GITTI': 5,
-  'BRICKS': 12,
-  'OTHER SERVICES': 18,
-'TILES': 18,
-'TAAR': 18,
-'BRUSH': 18,
-'LABOUR CHARGE': 18,
-'FURNITURE': 18,
-'ELECTRONICS ITEMS': 18,
-  'PAINT': 18,
-  'PAINTING SERVICE': 18
-
+  'CEMENT': 28,'LOHA': 18,'MURUM': 5,'RET': 5,'JCB SERVICE': 18,
+  'GITTI': 5,'BRICKS': 12,'OTHER SERVICES': 18,'TILES': 18,'TAAR': 18,
+  'BRUSH': 18,'LABOUR CHARGE': 18,'FURNITURE': 18,'ELECTRONICS ITEMS': 18,
+  'PAINT': 18,'PAINTING SERVICE': 18
 };
 
 const bodyEl = document.getElementById('calcBody');
@@ -183,10 +199,13 @@ const totalBankEl = document.getElementById('totalBank');
 
 function fmt(n){ return (isFinite(n)? Number(n).toFixed(2) : '0.00'); }
 
+/* --- Calculation logic --- */
 function recalc(){
   let tTds = 0, tBank = 0;
   [...bodyEl.querySelectorAll('tr')].forEach((tr, idx) => {
-    tr.querySelector('.rownum').textContent = idx + 1;
+    const rownumEl = tr.querySelector('.rownum');
+    if (rownumEl) rownumEl.textContent = idx + 1;
+
     const sel = tr.querySelector('select');
     const rateCell = tr.querySelector('.gst');
     const priceInput = tr.querySelector('.totalPrice');
@@ -205,9 +224,9 @@ function recalc(){
     const basic = gstRate > 0 ? (total / (1 + gstRate/100)) : 0;
     const sg = basic * (gstRate/2) / 100;
     const cg = sg;
-    const bill = basic + sg + cg; // equals total if inputs consistent
-    const tds = basic * 0.02;     // 2% of basic value
-    const bank = bill - tds;      // matches Excel: G - H
+    const bill = basic + sg + cg;
+    const tds = basic * 0.02;
+    const bank = bill - tds;
 
     basicCell.textContent = fmt(basic);
     sgstCell.textContent = fmt(sg);
@@ -222,15 +241,12 @@ function recalc(){
   totalBankEl.textContent = fmt(tBank);
 }
 
+/* --- Row creation --- */
 function makeRow(){
   const tr = document.createElement('tr');
   tr.innerHTML = `
     <td class="rownum narrow">1</td>
-    <td>
-      <select aria-label="Item Name">
-        ${Object.keys(ITEM_RATES).map(i => `<option value="${i}">${i}</option>`).join('')}
-      </select>
-    </td>
+    <td><select aria-label="Item Name">${Object.keys(ITEM_RATES).map(i => `<option value="${i}">${i}</option>`).join('')}</select></td>
     <td class="gst">0%</td>
     <td><input class="totalPrice" type="number" min="0" step="0.01" placeholder="0.00" /></td>
     <td class="basic">0.00</td>
@@ -243,33 +259,37 @@ function makeRow(){
   `;
   const sel = tr.querySelector('select');
   const inp = tr.querySelector('.totalPrice');
+
   sel.addEventListener('change', recalc);
   inp.addEventListener('input', recalc);
+
   tr.querySelector('.rm').addEventListener('click', () => { tr.remove(); recalc(); });
   return tr;
 }
 
 function addRow(){ bodyEl.appendChild(makeRow()); recalc(); }
 
-document.getElementById('addRowBtn').addEventListener('click', addRow);
-
-// PDF: capture full page content (header + card + footer)
+/* --- PDF download (requires html2pdf lib) --- */
 function downloadPDF(){
   const element = document.getElementById('page');
+  if (typeof html2pdf === 'undefined') {
+    // fallback to print if html2pdf is not available
+    return window.print();
+  }
   const opt = {
-    margin:       [0.5, 0.5, 0.5, 0.5],
-    filename:     'TDS_GST_Calculator.pdf',
-    image:        { type: 'jpeg', quality: 1 },
-    html2canvas:  { scale: 3, background: '#ffffff' },
-    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
-    pagebreak:    { mode: ['css','legacy'] }
+    margin: [0.5, 0.5, 0.5, 0.5],
+    filename: 'TDS_GST_Calculator.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 2, background: '#ffffff' },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+    pagebreak: { mode: ['css','legacy'] }
   };
   html2pdf().set(opt).from(element).save();
 }
 
+/* --- Wire up controls and start with one row --- */
+document.getElementById('addRowBtn').addEventListener('click', addRow);
 document.getElementById('downloadPdfBtn').addEventListener('click', downloadPDF);
-
-// boot with one row
 addRow();
 </script>
 </body>
