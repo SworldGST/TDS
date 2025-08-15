@@ -46,7 +46,7 @@
   .infobox b{color:#0b4470}
 
   /* Table */
-  table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--ring);border-radius:14px;overflow:hidden}
+  table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--ring);border-radius:14px;overflow:hidden;table-layout:fixed}
   thead th{background:#e6f2fb;color:#0b4470;font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:.4px;padding:10px;border-bottom:1px solid var(--ring)}
   tbody td, tfoot td{border-bottom:1px solid #eef4fb;padding:8px 8px;text-align:center}
   tbody tr:hover{background:#f9fcff}
@@ -58,6 +58,8 @@
   select:focus, input[type="number"]:focus{box-shadow:0 0 0 3px #cfe8ff;border-color:#9ed0ff}
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button{appearance:none;margin:0}
+
+  .table-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
   /* Footer */
   footer{margin:26px 0;color:#fff;background:var(--blue-2);padding:14px;text-align:center;border-top:4px solid var(--blue)}
@@ -73,42 +75,20 @@
 
   
 /* Responsive improvements */
-@media (max-width: 720px) {
-  /* Make table scroll instead of breaking */
-  table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  thead, tbody, tfoot {
-    display: table;
-    width: 100%;
-  }
-
-  /* Slightly smaller text & tighter padding */
-  header h1 {
-    font-size: 18px;
-  }
-  .btn {
-    padding: 8px 12px;
-    font-size: 14px;
-  }
-  select, input[type="number"] {
-    font-size: 14px;
-    padding: 6px;
-  }
-
-  /* Remove hiding extra columns — let scrolling handle it */
-  thead th, tbody td {
-    min-width: 80px;
-  }
+@media (max-width: 720px){
+  header h1{font-size:18px}
+  .btn{padding:8px 12px;font-size:14px}
+  select, input[type="number"]{font-size:14px;padding:6px}
+  #calcTable{min-width:900px}
 }
 
 /* Ultra small devices */
-@media (max-width: 480px) {
-  header h1 {
-    font-size: 16px;
-  }
+@media (max-width: 480px){
+  header h1{font-size:16px}
+  .btn{font-size:13px;padding:6px 10px}
+  select, input[type="number"]{font-size:13px;padding:5px}
+  #calcTable{min-width:900px}
+}
   .btn {
     font-size: 13px;
     padding: 6px 10px;
@@ -120,6 +100,8 @@
 }
 
   }
+
+  #calcTable thead th,#calcTable tbody td,#calcTable tfoot td{border-right:1px solid #fff;border-bottom:1px solid #fff}#calcTable thead th:last-child,#calcTable tbody td:last-child,#calcTable tfoot td:last-child{border-right:none}#calcTable tbody tr:last-child td{border-bottom:1px solid #fff}#calcTable input.totalPrice{text-align:right}
 </style>
 <!-- High‑quality client‑side PDF (includes header & footer) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-YcsIP8qQ8iD3fXyUQqkQy6yZP7c9bQFspQqYc7BubQyB1pPuBQm7gkH4F3gK9u6V9eVQ0C0k3Zb0+JrYp7XhIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
