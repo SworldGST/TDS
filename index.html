@@ -18,69 +18,38 @@
     --teal:#009688;
     --violet:#6c63ff;
   }
-
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
   a{color:inherit}
 
-  /* Header */
-  header{background:linear-gradient(90deg,var(--blue),#1398ff);color:#fff;padding:18px 16px;text-align:center;position:sticky;top:0;z-index:20;box-shadow:0 6px 20px rgba(0,0,0,.08)}
+  header{background:linear-gradient(90deg,var(--blue),#1398ff);color:#fff;padding:18px 16px;text-align:center;position:sticky;top:0;z-index:10;box-shadow:0 6px 20px rgba(0,0,0,.08)}
   header h1{margin:0;font-size:22px;letter-spacing:.3px}
 
-  /* Layout */
   #page{max-width:1200px;margin:22px auto;padding:0 16px}
   .card{background:var(--card);border:1px solid var(--ring);border-radius:14px;box-shadow:0 10px 26px rgba(11,116,196,.06)}
   .hero{padding:16px 16px 8px}
   .hero h2{margin:0 0 6px}
   .hero p{margin:0;color:var(--muted)}
 
-  /* Controls */
   .controls{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
-  .btn{appearance:none;border:1px solid transparent;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(11,116,196,.16);background:#fff}
-  .btn-add{background:var(--teal);color:#fff;border-color:transparent}
-  .btn-download{background:var(--violet);color:#fff;border-color:transparent}
-  .btn-remove{background:var(--danger);color:#fff;border-color:#d67c7c}
-  .btn:active{transform:translateY(1px)}
+  .btn{appearance:none;border:1px solid transparent;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(11,116,196,.16)}
+  .btn-add{background:var(--teal);color:#fff}
+  .btn-download{background:var(--violet);color:#fff}
+  .btn-remove{background:var(--danger);color:#fff;border-color:#d67c7c;font-size:12px;padding:4px 8px;line-height:1}
 
-  /* Info */
   .infobox{background:var(--blue-3);border:1px dashed #b9dafd;color:#0e406a;padding:12px;border-radius:12px;margin:10px 0}
   .infobox b{color:#0b4470}
 
-  /* Table wrapper to allow horizontal scroll on small screens */
-  .table-wrapper {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Table (keep true table layout) */
-  table{
-    width:100%;
-    border-collapse:separate;
-    border-spacing:0;
-    background:var(--card);
-    border:1px solid var(--ring);
-    border-radius:14px;
-    overflow:hidden;
-    table-layout:auto;
-    min-width: 700px; /* baseline so columns have room on small screens */
-  }
-  thead th{
-    background:#e6f2fb;color:#0b4470;font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:.4px;padding:10px;
-  }
+  .table-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--ring);border-radius:14px;overflow:hidden;table-layout:fixed}
+  thead th{background:#e6f2fb;color:#0b4470;font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:.4px;padding:10px}
   tbody td, tfoot td{padding:8px 8px;text-align:center;vertical-align:middle}
   tbody tr:hover{background:#f9fcff}
   tfoot td{font-weight:800;background:#f3f8fe}
-  .narrow{min-width:100px}           /* ensure Action column is wide enough */
+  .narrow{width:70px}
   .right{text-align:right}
-
-  /* white borders for alignment */
-  #calcTable thead th,#calcTable tbody td,#calcTable tfoot td{
-    border-right:1px solid #fff;
-    border-bottom:1px solid #fff;
-  }
-  #calcTable thead th:last-child,#calcTable tbody td:last-child,#calcTable tfoot td:last-child{
-    border-right:none;
-  }
+  #calcTable thead th,#calcTable tbody td,#calcTable tfoot td{border-right:1px solid #fff;border-bottom:1px solid #fff}
+  #calcTable thead th:last-child,#calcTable tbody td:last-child,#calcTable tfoot td:last-child{border-right:none}
   #calcTable tbody tr:last-child td{border-bottom:1px solid #fff}
   #calcTable input.totalPrice{text-align:right}
 
@@ -89,47 +58,28 @@
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button{appearance:none;margin:0}
 
-  /* Footer */
   footer{margin:26px 0;color:#fff;background:var(--blue-2);padding:14px;text-align:center;border-top:4px solid var(--blue)}
   footer small{opacity:.98}
 
-  /* Print helpers */
   @media print{
     .controls{display:none}
     header{position:static;box-shadow:none}
     body{background:#fff}
     .card{box-shadow:none}
   }
-
-  /* Responsive tweaks */
-  @media (max-width: 900px){
-    table { min-width: 880px; } /* give enough horizontal room so columns don't collapse */
-  }
-
   @media (max-width: 720px){
     header h1{font-size:18px}
     .btn{padding:8px 12px;font-size:14px}
     select, input[type="number"]{font-size:14px;padding:6px}
-    /* make remove button smaller on mobile but keep text */
-    #calcTable td.narrow .btn-remove{
-      padding:4px 8px;
-      font-size:12px;
-      white-space:nowrap;
-    }
+    #calcTable{min-width:900px}
   }
-
-  @media (max-width:480px){
+  @media (max-width: 480px){
     header h1{font-size:16px}
     .btn{font-size:13px;padding:6px 10px}
     select, input[type="number"]{font-size:13px;padding:5px}
-    #calcTable td.narrow .btn-remove{
-      padding:3px 6px;
-      font-size:11px;
-    }
+    #calcTable{min-width:900px}
   }
 </style>
-
-<!-- html2pdf for PDF export (optional) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
@@ -144,38 +94,37 @@
         <button class="btn btn-download" id="downloadPdfBtn">SAVE AS PDF</button>
       </div>
 
-      <div class="infobox">
-        <b>GST & TDS (India) — quick note:</b> TDS on certain supplies is typically <b>2%</b> of the <i>taxable value</i> (basic price). For intrastate supplies, GST splits into <b>SGST</b> and <b>CGST</b> equally; for interstate, <b>IGST</b> applies (not shown here).
+      <div class="table-wrapper">
+      <table id="calcTable">
+        <thead>
+          <tr>
+            <th class="narrow">#</th>
+            <th>Item Name</th>
+            <th>GST Rate</th>
+            <th>Total Price</th>
+            <th>Basic Price</th>
+            <th>SGST</th>
+            <th>CGST</th>
+            <th>Total Bill Price</th>
+            <th>TDS Deduction 2%</th>
+            <th>Bank Transfer</th>
+            <th class="narrow">Action</th>
+          </tr>
+        </thead>
+        <tbody id="calcBody"></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="8" class="right">Grand Total</td>
+            <td id="totalTDS">0.00</td>
+            <td id="totalBank">0.00</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
       </div>
 
-      <div class="table-wrapper">
-        <table id="calcTable" aria-describedby="calc-desc">
-          <caption id="calc-desc" style="display:none">Invoice calculation table</caption>
-          <thead>
-            <tr>
-              <th class="narrow">#</th>
-              <th>Item Name</th>
-              <th>GST Rate</th>
-              <th>Total Price</th>
-              <th>Basic Price</th>
-              <th>SGST</th>
-              <th>CGST</th>
-              <th>Total Bill Price</th>
-              <th>TDS Deduction 2%</th>
-              <th>Bank Transfer</th>
-              <th class="narrow">Action</th>
-            </tr>
-          </thead>
-          <tbody id="calcBody"></tbody>
-          <tfoot>
-            <tr>
-              <td colspan="8" class="right">Grand Total</td>
-              <td id="totalTDS">0.00</td>
-              <td id="totalBank">0.00</td>
-              <td></td>
-            </tr>
-          </tfoot>
-        </table>
+      <div class="infobox">
+        <b>GST & TDS (India) — quick note:</b> TDS on certain supplies is typically <b>2%</b> of the <i>taxable value</i> (basic price). For intrastate supplies, GST splits into <b>SGST</b> and <b>CGST</b> equally; for interstate, <b>IGST</b> applies (not shown here).
       </div>
     </section>
 
@@ -185,7 +134,6 @@
   </div>
 
 <script>
-/* --- Data & helpers --- */
 const ITEM_RATES = {
   'CEMENT': 28,'LOHA': 18,'MURUM': 5,'RET': 5,'JCB SERVICE': 18,
   'GITTI': 5,'BRICKS': 12,'OTHER SERVICES': 18,'TILES': 18,'TAAR': 18,
@@ -199,13 +147,10 @@ const totalBankEl = document.getElementById('totalBank');
 
 function fmt(n){ return (isFinite(n)? Number(n).toFixed(2) : '0.00'); }
 
-/* --- Calculation logic --- */
 function recalc(){
   let tTds = 0, tBank = 0;
   [...bodyEl.querySelectorAll('tr')].forEach((tr, idx) => {
-    const rownumEl = tr.querySelector('.rownum');
-    if (rownumEl) rownumEl.textContent = idx + 1;
-
+    tr.querySelector('.rownum').textContent = idx + 1;
     const sel = tr.querySelector('select');
     const rateCell = tr.querySelector('.gst');
     const priceInput = tr.querySelector('.totalPrice');
@@ -241,7 +186,6 @@ function recalc(){
   totalBankEl.textContent = fmt(tBank);
 }
 
-/* --- Row creation --- */
 function makeRow(){
   const tr = document.createElement('tr');
   tr.innerHTML = `
@@ -259,37 +203,29 @@ function makeRow(){
   `;
   const sel = tr.querySelector('select');
   const inp = tr.querySelector('.totalPrice');
-
   sel.addEventListener('change', recalc);
   inp.addEventListener('input', recalc);
-
   tr.querySelector('.rm').addEventListener('click', () => { tr.remove(); recalc(); });
   return tr;
 }
 
 function addRow(){ bodyEl.appendChild(makeRow()); recalc(); }
+document.getElementById('addRowBtn').addEventListener('click', addRow);
 
-/* --- PDF download (requires html2pdf lib) --- */
 function downloadPDF(){
   const element = document.getElementById('page');
-  if (typeof html2pdf === 'undefined') {
-    // fallback to print if html2pdf is not available
-    return window.print();
-  }
   const opt = {
     margin: [0.5, 0.5, 0.5, 0.5],
     filename: 'TDS_GST_Calculator.pdf',
     image: { type: 'jpeg', quality: 1 },
-    html2canvas: { scale: 2, background: '#ffffff' },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+    html2canvas: { scale: 3, background: '#ffffff' },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' },
     pagebreak: { mode: ['css','legacy'] }
   };
   html2pdf().set(opt).from(element).save();
 }
-
-/* --- Wire up controls and start with one row --- */
-document.getElementById('addRowBtn').addEventListener('click', addRow);
 document.getElementById('downloadPdfBtn').addEventListener('click', downloadPDF);
+
 addRow();
 </script>
 </body>
